@@ -341,7 +341,7 @@
       const chip = chips[n]; const row = chip.parentElement;
       row.scrollTo({ left: chip.offsetLeft - row.clientWidth / 2 + chip.offsetWidth / 2, behavior: 'smooth' });
     };
-    const DUR = [1300, 1900, 1600, 1700, 1600, 2000, 3200];
+    const DUR = [1050, 1500, 1300, 1350, 1300, 1600, 2600];
     const tick = () => {
       clearTimeout(timer);
       if (!visible || manual) return;
