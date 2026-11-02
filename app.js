@@ -367,14 +367,20 @@
       { q: 'למדתי עיצוב גבות ולא עשיתי עם זה כלום. מה עושים?', a: ['להתחיל מהמעגל הקרוב: חברות ומשפחה.', 'אחר כך לעבור למודליסטיות, להשתפשף ולא לוותר לעצמך.', 'והכי חשוב: כשאת נרשמת לקורס, <mark>תוודאי שיש לך ליווי</mark>.'], v: 'v-studio' },
       { q: 'את מקבלת גם לטיפולים?', a: ['בטח, זאת האהבה שלי.', 'אני מקבלת לטיפולים <mark>בקליניקה ברמת גן</mark>.'], v: 'v-lash-course', cta: true },
     ];
-    const bars = $('#sqBars'), body = $('#sqBody'), bg = $('#sqBg');
+    const bars = $('#sqBars'), body = $('#sqBody'), bg = $('#sqBg'), poster = $('#sqPoster');
+    // the next story's video loads in the background, so the switch is instant
+    const warm = document.createElement('video'); warm.muted = true; warm.preload = 'auto'; warm.playsInline = true;
+    const shown = () => bg.classList.remove('loading');
+    ['playing', 'loadeddata'].forEach((ev) => bg.addEventListener(ev, () => { if (bg.readyState >= 2) shown(); }));
     bars.innerHTML = QA.map(() => '<span><i></i></span>').join('');
     const barEls = $$('span', bars);
     let i = 0, timer = null, visible = false, paused = false;
     const durOf = (it) => 2600 + it.a.join(' ').length * 55 + (it.reply ? 1400 : 0);
     const render = () => {
       const it = QA[i];
-      bg.src = `assets/video/${it.v}.mp4`; bg.poster = `assets/video/${it.v}.jpg`;
+      // the still frame shows at once underneath; the video fades in only when it really plays (no black flash)
+      poster.src = `assets/video/${it.v}.jpg`;
+      if (!bg.src.endsWith(`${it.v}.mp4`)) { bg.classList.add('loading'); bg.poster = `assets/video/${it.v}.jpg`; bg.src = `assets/video/${it.v}.mp4`; }
       const p = bg.play(); if (p && p.catch) p.catch(() => {});
       body.innerHTML = `
         <div class="sq-q"><div class="sq-q-top">שאלה</div><div class="sq-q-txt">${it.q}</div></div>
@@ -386,8 +392,9 @@
       void bars.offsetWidth; barEls[i].classList.add('run');
       clearTimeout(timer);
       if (visible && !paused) timer = setTimeout(next, d);
-      // preload next background
+      // preload the next one: its still frame and its video
       const n = QA[(i + 1) % QA.length]; const pre = new Image(); pre.src = `assets/video/${n.v}.jpg`;
+      if (!warm.src.endsWith(`${n.v}.mp4`)) { warm.src = `assets/video/${n.v}.mp4`; try { warm.load(); } catch (e) {} }
     };
     const next = () => { i = (i + 1) % QA.length; render(); };
     const prev = () => { i = (i - 1 + QA.length) % QA.length; render(); };

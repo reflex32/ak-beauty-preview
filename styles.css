@@ -1373,7 +1373,7 @@ body::after {
 /* sticky course tabs follow the header */
 .tabs { transition: top .5s var(--ease); }
 .hdr.hide ~ main .tabs { top: calc(10px + env(safe-area-inset-top, 0px)); }
-section[id] { scroll-margin-top: 0; }
+section[id] { scroll-margin-top: calc(70px + env(safe-area-inset-top, 0px)); } /* the top bar never covers the heading after a jump */
 
 /* ---------- booking: extra options as tappable rows ---------- */
 .treat-more { display: grid; gap: 10px; margin-top: 16px; }
@@ -2262,3 +2262,11 @@ html.a11y-still *, html.a11y-still *::before, html.a11y-still *::after { animati
 .reels .hscroll { scroll-snap-type: x proximity; touch-action: pan-x pan-y; }
 .reel { width: 52vw; max-width: 240px; }
 @media (min-width: 760px) { .reel { width: 240px; } }
+/* story Q&A: a still frame under the video, the video fades in once it plays (no black flash between stories) */
+.sq-poster { z-index: -3; background: #1b120d; }
+.sq-bg:not(.sq-poster) { transition: opacity .35s ease; }
+.sq-bg.loading { opacity: 0; }
+
+/* carousels: cards show at once (no slide-up reveal that made them jump), soft snapping, vertical swipes scroll the page */
+.js .hscroll > .rv, .js .hscroll > .rv.in { opacity: 1; transform: none; filter: none; transition: none; }
+.hscroll { scroll-snap-type: x proximity; touch-action: pan-x pan-y; }
