@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>יום ההולדת שלך · AK Beauty Academy</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f8f2ec">
+<link rel="icon" type="image/png" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="config.js?v=11040300"></script>
+<style>
+  :root { --cream: #f8f2ec; --cream-2: #f1e7de; --paper: #fffcf9; --brown: #5c3422; --espresso: #24160f; --rose: #c8998a; --rose-deep: #a8705f;
+    --ink: #2b1e17; --muted: #7d6a5f; --line: rgba(92, 52, 34, .14); --ok: #3f7d5b; --bad: #b0473a; --ease: cubic-bezier(.22, .8, .2, 1); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100svh; font-family: 'Heebo', system-ui, sans-serif; color: var(--ink); background: var(--cream); -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: -25% -30% auto; height: 70%; z-index: -1; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(236, 196, 178, .55), rgba(236, 196, 178, 0)); }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
+  [hidden] { display: none !important; }
+  .ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .num { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+  .wrap { display: flex; flex-direction: column; align-items: center; min-height: 100svh; padding: calc(26px + env(safe-area-inset-top)) 16px calc(26px + env(safe-area-inset-bottom)); }
+  .logo { width: 56px; color: var(--brown); margin-bottom: 22px; }
+  .logo svg { display: block; width: 100%; height: auto; fill: currentColor; }
+  .card { width: 100%; max-width: 430px; padding: 26px 20px 22px; border-radius: 30px; background: rgba(255, 252, 249, .92);
+    box-shadow: 0 0 0 1px var(--line), 0 40px 70px -40px rgba(36, 22, 15, .45); animation: rise .6s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  .hi { margin: 0 0 4px; font-size: 15px; color: var(--muted); text-align: center; }
+  h1 { margin: 0 0 18px; font-size: 23px; font-weight: 700; color: var(--brown); text-align: center; text-wrap: balance; }
+  /* the ticket: the date big, the rest quiet */
+  .ticket { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: center; padding: 18px; border-radius: 22px; background: #fff;
+    box-shadow: 0 0 0 1px var(--line); margin-bottom: 14px; }
+  .ticket::before, .ticket::after { content: ''; position: absolute; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); }
+  .ticket::before { right: -9px; } .ticket::after { left: -9px; }
+  .t-date { grid-row: span 3; display: grid; justify-items: center; padding-left: 16px; border-left: 1px dashed var(--line); min-width: 74px; }
+  .t-date small { font-size: 13px; color: var(--muted); }
+  .t-date b { font-size: 46px; font-weight: 800; line-height: 1; color: var(--brown); letter-spacing: -.02em; }
+  .t-date span { font-size: 13px; color: var(--muted); }
+  .t-time { font-size: 22px; font-weight: 700; }
+  .t-svc { font-size: 15px; color: var(--ink); }
+  .t-where { font-size: 13.5px; color: var(--muted); }
+  .status { display: block; width: fit-content; margin: 0 auto 14px; padding: 5px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--cream-2); color: var(--brown); }
+  .status.cancelled { background: #f6e7e4; color: var(--bad); }
+  .status.pending { background: #fbf0dc; color: #8a5a12; }
+  .links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--paper); box-shadow: 0 0 0 1px var(--line); font-size: 14px; color: var(--brown); text-decoration: none; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 0 18px; border-radius: 999px; font-size: 16px; font-weight: 600; text-decoration: none; transition: transform .2s var(--ease), opacity .2s; }
+  .btn:active { transform: scale(.98); }
+  .btn.primary { background: var(--brown); color: #fff; box-shadow: 0 14px 28px -14px rgba(92, 52, 34, .8); }
+  .btn.ghost { background: var(--paper); color: var(--brown); box-shadow: 0 0 0 1px var(--line); }
+  .btn.danger { background: #fbeae7; color: var(--bad); }
+  .btn.wa { background: #1fa855; color: #fff; }
+  .btn.ok { background: #3f7d5b; color: #fff; box-shadow: 0 14px 28px -14px rgba(63, 125, 91, .8); }
+  .confirmed { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 14px; padding: 12px; border-radius: 16px; background: #e6f2ea; color: #3f7d5b; font-weight: 600; }
+  .btn[disabled] { opacity: .5; pointer-events: none; }
+  .stack { display: grid; gap: 10px; }
+  .rule { margin: 14px 0 0; font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55; }
+  .days { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px 14px; padding: 2px 20px; }
+  .days::-webkit-scrollbar { display: none; }
+  .day { flex: none; width: 58px; padding: 8px 0; border-radius: 16px; text-align: center; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+  .day small { display: block; font-size: 12px; color: var(--muted); }
+  .day b { display: block; font-size: 19px; font-weight: 700; }
+  .day span { display: block; font-size: 11.5px; color: var(--muted); }
+  .day.on { background: var(--espresso); color: #fff; box-shadow: none; }
+  .day.on small, .day.on span { color: rgba(255, 255, 255, .75); }
+  .day.closed { opacity: .4; }
+  .times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; min-height: 60px; margin-bottom: 14px; }
+  .time { padding: 11px 0; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px var(--line); font-size: 15.5px; font-variant-numeric: tabular-nums; }
+  .time.on { background: var(--espresso); color: #fff; box-shadow: none; }
+  .empty { grid-column: 1 / -1; padding: 16px 6px; text-align: center; font-size: 14.5px; color: var(--muted); }
+  .back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; color: var(--brown); font-size: 14.5px; }
+  .msg { min-height: 1.3em; margin: 10px 0 0; font-size: 14px; color: var(--bad); text-align: center; }
+  .done-ic { display: grid; place-items: center; width: 64px; height: 64px; margin: 4px auto 14px; border-radius: 50%; background: #e6f2ea; color: var(--ok); }
+  .done-ic.bad { background: #f6e7e4; color: var(--bad); }
+  .done-ic .ic { width: 30px; height: 30px; stroke-width: 2.2; }
+  .spin { width: 30px; height: 30px; margin: 40px auto; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--brown); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .foot { margin-top: 18px; font-size: 12.5px; color: var(--muted); text-align: center; }
+  .sub { margin: -10px 0 18px; font-size: 15px; color: var(--muted); text-align: center; line-height: 1.55; text-wrap: balance; }
+  .bday { display: grid; grid-template-columns: 1fr 1.5fr 1.2fr; gap: 8px; margin-bottom: 14px; }
+  .bday label { display: grid; gap: 5px; font-size: 13px; color: var(--muted); }
+  .bday select { width: 100%; min-height: 52px; padding: 0 12px; border: 0; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px var(--line); font: inherit; font-size: 17px; color: var(--ink); appearance: none; -webkit-appearance: none; text-align: center; }
+  .bday select:focus { outline: 2px solid var(--rose); outline-offset: 1px; }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ak" viewBox="110 40 716 546"><polygon points="119.6,576 151.6,576 518,169.3 518,576 540,576 540,111"/><polygon points="816,50.2 816,87.5 605.2,333.2 815.2,576 783.2,576 573.2,333.2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M4 11V9a3 3 0 0 1 3-3h12l-3-3M20 13v2a3 3 0 0 1-3 3H5l3 3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23z"/></symbol>
+</svg>
+<div class="wrap">
+  <a class="logo" href="./" aria-label="AK Beauty Academy"><svg aria-hidden="true"><use href="#ak"/></svg></a>
+  <main class="card" id="card" aria-live="polite"><div class="spin" aria-label="טוען"></div></main>
+  <p class="foot">AK Beauty Academy · אביגיל קקון</p>
+</div>
+<script src="birthday.js?v=11040400"></script>
+</body>
+</html>
