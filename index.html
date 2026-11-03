@@ -10,8 +10,8 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="אביגיל קקון · AK Beauty Academy">
 <meta property="og:description" content="קורסים לעיצוב ושיקום גבות, מיקרובליידינג והרמת ריסים אצל אביגיל קקון, רמת גן.">
-<meta property="og:image" content="https://reflex32.github.io/ak-beauty-preview/assets/img/share.jpg">
 <meta property="og:url" content="https://reflex32.github.io/ak-beauty-preview/">
+<meta property="og:image" content="https://reflex32.github.io/ak-beauty-preview/assets/img/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="AK Beauty Academy">
@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/img/hero-sm.webp" imagesrcset="assets/img/hero-sm.webp 900w, assets/img/hero.webp 1440w" imagesizes="100vw">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BeautySalon", "name": "AK Beauty Academy · אביגיל קקון", "description": "קורסי עיצוב ושיקום גבות, מיקרובליידינג והרמת ריסים, וטיפולים בקליניקה ברמת גן.", "telephone": "+972502774797", "address": {"@type": "PostalAddress", "streetAddress": "גילדסגיים 4 (בית הרופאים)", "addressLocality": "רמת גן", "addressCountry": "IL"}, "sameAs": ["https://www.instagram.com/avigail_kakoon/"], "image": "assets/img/hero-sm.webp", "geo": {"@type": "GeoCoordinates", "latitude": 32.0526698, "longitude": 34.8488945}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Sunday", "Monday", "Wednesday", "Thursday"], "opens": "07:00", "closes": "19:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "07:00", "closes": "20:00"}]}</script>
-<link rel="stylesheet" href="styles.css?v=11030200">
+<link rel="stylesheet" href="styles.css?v=11031300">
 <script src="config.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}</script>
 <script>document.documentElement.classList.add('js');if(!location.hash&&'scrollRestoration' in history)history.scrollRestoration='manual';try{if(sessionStorage.getItem('akSeen'))document.documentElement.classList.add('ld-quick')}catch(e){}</script>
@@ -466,8 +466,33 @@
         <div class="sim-photos" id="simPhotos">
           <img class="sp sp0 on" src="assets/img/sim-0.webp" alt="גבה לפני טיפול">
           <img class="sp sp1" src="assets/img/sim-1.webp" alt="" loading="lazy">
-          <img class="sp sp2" src="assets/img/sim-2.webp" alt="" loading="lazy">
           <img class="sp sp3" src="assets/img/sim-3.webp" alt="" loading="lazy">
+          <svg class="sim-hairs" id="simHairs" viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="penSteel" gradientUnits="userSpaceOnUse" x1="0" y1="-12" x2="0" y2="12"><stop offset="0" stop-color="#8d969e"/><stop offset=".45" stop-color="#f1f4f6"/><stop offset="1" stop-color="#737c84"/></linearGradient>
+              <linearGradient id="penGold" gradientUnits="userSpaceOnUse" x1="0" y1="-13" x2="0" y2="13"><stop offset="0" stop-color="#b47c64"/><stop offset=".42" stop-color="#f6d9c9"/><stop offset="1" stop-color="#9e6753"/></linearGradient>
+              <linearGradient id="penGrip" gradientUnits="userSpaceOnUse" x1="0" y1="-15" x2="0" y2="15"><stop offset="0" stop-color="#d9c4b7"/><stop offset=".4" stop-color="#fffaf6"/><stop offset="1" stop-color="#bfa697"/></linearGradient>
+              <linearGradient id="penBody" gradientUnits="userSpaceOnUse" x1="0" y1="-14" x2="0" y2="14"><stop offset="0" stop-color="#e3d1c5"/><stop offset=".38" stop-color="#ffffff"/><stop offset="1" stop-color="#cfb8aa"/></linearGradient>
+              <filter id="maskBlur" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+              <filter id="penBlur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+            </defs>
+            <clipPath id="simMaskClip"><rect id="simMaskRect" x="-40" y="0" width="1700" height="1024"/></clipPath>
+            <g id="simHairG"></g>
+            <g filter="url(#maskBlur)"><path class="sim-mask" clip-path="url(#simMaskClip)" d="M216 424 C 380 345, 640 262, 846 258 C 1050 258, 1235 330, 1372 408 C 1300 320, 1130 160, 868 124 C 610 104, 345 205, 220 300 Z"/></g>
+            <g class="sim-pen" id="simPen">
+              <g transform="translate(18 30) rotate(-52)" opacity=".28" filter="url(#penBlur)"><rect x="6" y="-13" width="470" height="26" rx="13" fill="#24160f"/></g>
+              <g transform="rotate(-52)">
+                <path d="M0 -6 L24 -11 L24 11 L0 6 Z" fill="url(#penSteel)"/>
+                <path d="M.8 -6 V6" stroke="#2a2a2e" stroke-width="2.6" stroke-linecap="round"/>
+                <rect x="22" y="-12" width="52" height="24" rx="5" fill="url(#penGold)"/>
+                <path d="M36 -12 V12 M46 -12 V12" stroke="rgba(92,52,34,.35)" stroke-width="1.6"/>
+                <rect x="72" y="-15" width="110" height="30" rx="8" fill="url(#penGrip)"/>
+                <path d="M84 -15 V15 M96 -15 V15 M108 -15 V15 M120 -15 V15 M132 -15 V15 M144 -15 V15 M156 -15 V15 M168 -15 V15" stroke="rgba(92,52,34,.16)" stroke-width="2"/>
+                <rect x="178" y="-14" width="300" height="28" rx="14" fill="url(#penBody)"/>
+                <rect x="190" y="-9" width="270" height="4" rx="2" fill="rgba(255,255,255,.75)"/>
+              </g>
+            </g>
+          </svg>
         </div>
         <svg class="sim-over" viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice" id="simSvg" aria-hidden="true">
           <g class="sim-map">
@@ -487,7 +512,7 @@
       <div class="sim-ui">
         <div class="sim-bar"><i id="simBar"></i></div>
         <div class="sim-chips" id="simChips">
-          <button data-s="0" class="on">לפני</button><button data-s="1">מיפוי</button><button data-s="2">שרטוט</button><button data-s="3">ניקוי</button><button data-s="4">צבע</button><button data-s="5">מיקרובליידינג</button><button data-s="6">התוצאה</button>
+          <button data-s="0" class="on">לפני</button><button data-s="1">מיפוי</button><button data-s="2">שרטוט</button><button data-s="3">ניקוי</button><button data-s="4">מיקרובליידינג</button><button data-s="5">פיגמנט</button><button data-s="6">התוצאה</button>
         </div>
         <h3 class="sim-title" id="simTitle">לפני</h3>
         <p class="sim-text" id="simText">גבה טבעית, עם חורים ושערות שבורחות לכל הכיוונים.</p>
@@ -684,7 +709,6 @@
         <div class="ba-pills" id="baPills">
           <button class="ba-pill on" data-ba="0">עיצוב גבות + ריסים</button>
           <button class="ba-pill" data-ba="1">מיקרובליידינג על גבה עבה</button>
-          <button class="ba-pill" data-ba="2">מיקרובליידינג טבעי</button>
         </div>
         <div class="slider" id="slider" role="slider" aria-label="השוואת לפני ואחרי" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
           <img class="before" src="assets/img/ba1-before.webp" alt="לפני">
@@ -716,6 +740,33 @@
 </section>
 
 <!-- ====================== TREATMENTS ====================== -->
+<section class="sec dark tattoo" id="tattoo">
+  <span class="tt-aura" aria-hidden="true"></span>
+  <div class="wrap">
+    <div class="tt-grid">
+      <div class="tt-copy">
+        <p class="kicker rv">עוד טיפול בקליניקה</p>
+        <h2 class="h2 split"><span class="ln"><span>גם <b>הסרת קעקועים</b></span></span></h2>
+        <p class="lead rv">קעקוע שכבר לא מתאים לך? אביגיל מטפלת גם בהסרת קעקועים, בקליניקה ברמת גן.</p>
+      </div>
+      <div class="tt-stage rv">
+        <canvas class="tt-canvas" id="ttCanvas" role="img" aria-label="קעקוע עדין על העור, שנעלם בהדרגה"></canvas>
+        <span class="tt-frame" aria-hidden="true"></span>
+      </div>
+      <div class="tt-side">
+        <ul class="tt-sizes">
+          <li class="rv" style="--i:0"><i class="tt-dot" style="--d:10px"></i><b>קעקוע קטן</b><span>₪250</span></li>
+          <li class="rv" style="--i:1"><i class="tt-dot" style="--d:16px"></i><b>קעקוע בינוני</b><span>₪300</span></li>
+          <li class="rv" style="--i:2"><i class="tt-dot" style="--d:22px"></i><b>קעקוע גדול</b><span>₪350</span></li>
+        </ul>
+        <p class="tt-note rv">המחיר לטיפול, לפי גודל הקעקוע.</p>
+        <button type="button" class="btn btn-light tt-cta rv" id="ttBook">לקביעת תור להסרת קעקוע<svg class="icon" aria-hidden="true"><use href="#i-left"/></svg></button>
+        <a class="tt-wa rv" href="https://wa.me/972502774797?text=%D7%94%D7%99%D7%99%20%D7%90%D7%91%D7%99%D7%92%D7%99%D7%9C%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%95%D7%A8%D7%99%D7%93%20%D7%A7%D7%A2%D7%A7%D7%95%D7%A2.%20%D7%9E%D7%A6%D7%A8%D7%A4%D7%AA%20%D7%AA%D7%9E%D7%95%D7%A0%D7%94%20%D7%A9%D7%9C%D7%95%3A" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>לא בטוחה מה הגודל? שלחי לאביגיל תמונה</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec treat book" id="treat">
   <div class="wrap">
     <div class="sec-head">
@@ -1123,9 +1174,10 @@
   <div class="lb-foot" id="lbFoot"></div>
 </div>
 
-<script src="app.js?v=11030200" defer></script>
-<script src="booking.js?v=11021810" defer></script>
+<script src="app.js?v=11031300" defer></script>
+<script src="booking.js?v=11031200" defer></script>
 <script src="cert.js?v=11021500" defer></script>
+<script src="tattoo.js?v=11031200" defer></script>
 <script type="module" src="cert3d.js?v=11021610"></script>
 <script src="gift.js?v=11021100" defer></script>
 <script src="analytics.js?v=11021200" defer></script>

@@ -27,6 +27,9 @@
     { key: 'lash-brow-lift', cat: 'ריסים', name: 'הרמת ריסים + הרמת גבות', price: 500, minutes: 90, deposit: 50 },
     { key: 'micro', cat: 'מיקרובליידינג', name: 'מיקרובליידינג', price: 2000, minutes: 150, deposit: 200 },
     { key: 'micro-2', cat: 'מיקרובליידינג', name: 'מיקרובליידינג, טיפול שני', price: null, minutes: 90, deposit: 0 },
+    { key: 'tattoo-s', cat: 'הסרת קעקועים', name: 'הסרת קעקוע קטן', price: 250, minutes: 15, deposit: 0 },
+    { key: 'tattoo-m', cat: 'הסרת קעקועים', name: 'הסרת קעקוע בינוני', price: 300, minutes: 20, deposit: 0 },
+    { key: 'tattoo-l', cat: 'הסרת קעקועים', name: 'הסרת קעקוע גדול', price: 350, minutes: 30, deposit: 0 },
   ];
   let HOURS = { 0: ['07:00', '19:30'], 1: ['07:00', '19:30'], 2: ['07:00', '20:00'], 3: ['07:00', '19:30'], 4: ['07:00', '19:30'], 5: null, 6: null };
   let STEP = 15;
@@ -35,6 +38,7 @@
     { cat: 'גבות', img: 'assets/img/ill-brow-b.webp', sub: 'עיצוב, צבע, שפם' },
     { cat: 'ריסים', img: 'assets/img/ill-lash-b.webp', sub: 'הרמה וצבע' },
     { cat: 'מיקרובליידינג', img: 'assets/img/ill-brow-a.webp', sub: 'שערה אחרי שערה' },
+    { cat: 'הסרת קעקועים', img: 'assets/img/ill-tattoo.webp', sub: 'לפי גודל' },
   ];
 
   const $ = (s, el = root) => el.querySelector(s);
@@ -476,5 +480,11 @@
     const toCard = () => scrollTo({ top: root.getBoundingClientRect().top + scrollY - 84, behavior: 'smooth' });
     toCard(); loadDates().then(() => setTimeout(toCard, 60));
   };
-  window.akBooking = { state: S, go, start };
+  // open the booking on one category, at the treatment step (used by the tattoo section)
+  const openCat = (cat) => {
+    if (!CATS.some((c) => c.cat === cat)) return;
+    S.cat = cat; go(1, { stay: true }); renderCats(); renderList(); syncBar();
+    scrollTo({ top: root.getBoundingClientRect().top + scrollY - 84, behavior: 'smooth' });
+  };
+  window.akBooking = { state: S, go, start, openCat };
 })();
