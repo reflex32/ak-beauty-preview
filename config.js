@@ -6,3 +6,7 @@ window.AK_API = '';
    Empty = nothing loads. When set, visitors are asked once before anything is measured. */
 window.AK_META_PIXEL = '';
 window.AK_GA4 = '';
+
+/* Avigail's booking system (Supabase). The publishable key is public by design: the data is locked,
+   and the site only reaches it through a few functions (e.g. a customer's personal link to move or cancel). */
+window.AK_SB = { url: 'https://frarpypjfdhquryidico.supabase.co', key: 'sb_publishable_LHaxMBM_CJ42pPVj88sABw_CuhjJX4o' };
