@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/img/hero-sm.webp" imagesrcset="assets/img/hero-sm.webp 900w, assets/img/hero.webp 1440w" imagesizes="100vw">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BeautySalon", "name": "AK Beauty Academy · אביגיל קקון", "description": "קורסי עיצוב ושיקום גבות, מיקרובליידינג והרמת ריסים, וטיפולים בקליניקה ברמת גן.", "telephone": "+972502774797", "address": {"@type": "PostalAddress", "streetAddress": "גילדסגיים 4 (בית הרופאים)", "addressLocality": "רמת גן", "addressCountry": "IL"}, "sameAs": ["https://www.instagram.com/avigail_kakoon/"], "image": "assets/img/hero-sm.webp", "geo": {"@type": "GeoCoordinates", "latitude": 32.0526698, "longitude": 34.8488945}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Sunday", "Monday", "Wednesday", "Thursday"], "opens": "07:00", "closes": "19:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "07:00", "closes": "20:00"}]}</script>
-<link rel="stylesheet" href="styles.css?v=11031300">
+<link rel="stylesheet" href="styles.css?v=11031500">
 <script src="config.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}</script>
 <script>document.documentElement.classList.add('js');if(!location.hash&&'scrollRestoration' in history)history.scrollRestoration='manual';try{if(sessionStorage.getItem('akSeen'))document.documentElement.classList.add('ld-quick')}catch(e){}</script>
@@ -139,6 +139,8 @@
     <a href="#ba">לפני ואחרי</a>
     <a href="#testi">מה הן כותבות</a>
     <a href="#grads">הבוגרות</a>
+    <a href="#tryon">הדמיה על הפנים שלך</a>
+    <a href="#tattoo">הסרת קעקועים</a>
     <a href="#gift">שובר מתנה</a>
     <a href="#about">עליי</a>
     <a href="#faq">שאלות ותשובות</a>
@@ -169,7 +171,7 @@
     </h1>
     <p class="lead big hero-fx d2">קורסי עיצוב ושיקום גבות, <span style="white-space:nowrap">מיקרובליידינג והרמת ריסים.</span><br>טיפולים בקליניקה ברמת גן.</p>
     <div class="paths hero-fx d3">
-      <a class="path path-book" href="#treat"><span class="pb-ic"><svg class="icon"><use href="#i-cal"/></svg></span><span class="pb-t"><b>קביעת תור</b><span>גבות · ריסים · שפם · מיקרובליידינג</span></span><svg class="icon pb-go"><use href="#i-left"/></svg></a>
+      <a class="path path-book" href="#treat"><span class="pb-ic"><svg class="icon"><use href="#i-cal"/></svg></span><span class="pb-t"><b>קביעת תור</b><span>גבות · ריסים · מיקרובליידינג · הסרת קעקועים</span></span><svg class="icon pb-go"><use href="#i-left"/></svg></a>
       <a class="path path-course" href="#forwhom"><span>רוצה ללמוד? <b>הקורסים שלי</b></span><svg class="icon"><use href="#i-left"/></svg></a>
     </div>
     <ul class="hero-proof hero-fx d4">
@@ -465,20 +467,18 @@
       <div class="sim-stage" id="simStage">
         <div class="sim-photos" id="simPhotos">
           <img class="sp sp0 on" src="assets/img/sim-0.webp" alt="גבה לפני טיפול">
-          <img class="sp sp1" src="assets/img/sim-1.webp" alt="" loading="lazy">
-          <img class="sp sp3" src="assets/img/sim-3.webp" alt="" loading="lazy">
+          <div class="sim-after" id="simAfter">
+            <img class="sp sp1" src="assets/img/sim-1.webp" alt="" loading="lazy">
+            <canvas class="sim-hc" id="simHc" aria-hidden="true"></canvas>
+          </div>
           <svg class="sim-hairs" id="simHairs" viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
               <linearGradient id="penSteel" gradientUnits="userSpaceOnUse" x1="0" y1="-12" x2="0" y2="12"><stop offset="0" stop-color="#8d969e"/><stop offset=".45" stop-color="#f1f4f6"/><stop offset="1" stop-color="#737c84"/></linearGradient>
               <linearGradient id="penGold" gradientUnits="userSpaceOnUse" x1="0" y1="-13" x2="0" y2="13"><stop offset="0" stop-color="#b47c64"/><stop offset=".42" stop-color="#f6d9c9"/><stop offset="1" stop-color="#9e6753"/></linearGradient>
               <linearGradient id="penGrip" gradientUnits="userSpaceOnUse" x1="0" y1="-15" x2="0" y2="15"><stop offset="0" stop-color="#d9c4b7"/><stop offset=".4" stop-color="#fffaf6"/><stop offset="1" stop-color="#bfa697"/></linearGradient>
               <linearGradient id="penBody" gradientUnits="userSpaceOnUse" x1="0" y1="-14" x2="0" y2="14"><stop offset="0" stop-color="#e3d1c5"/><stop offset=".38" stop-color="#ffffff"/><stop offset="1" stop-color="#cfb8aa"/></linearGradient>
-              <filter id="maskBlur" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
               <filter id="penBlur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
             </defs>
-            <clipPath id="simMaskClip"><rect id="simMaskRect" x="-40" y="0" width="1700" height="1024"/></clipPath>
-            <g id="simHairG"></g>
-            <g filter="url(#maskBlur)"><path class="sim-mask" clip-path="url(#simMaskClip)" d="M216 424 C 380 345, 640 262, 846 258 C 1050 258, 1235 330, 1372 408 C 1300 320, 1130 160, 868 124 C 610 104, 345 205, 220 300 Z"/></g>
             <g class="sim-pen" id="simPen">
               <g transform="translate(18 30) rotate(-52)" opacity=".28" filter="url(#penBlur)"><rect x="6" y="-13" width="470" height="26" rx="13" fill="#24160f"/></g>
               <g transform="rotate(-52)">
@@ -512,7 +512,7 @@
       <div class="sim-ui">
         <div class="sim-bar"><i id="simBar"></i></div>
         <div class="sim-chips" id="simChips">
-          <button data-s="0" class="on">לפני</button><button data-s="1">מיפוי</button><button data-s="2">שרטוט</button><button data-s="3">ניקוי</button><button data-s="4">מיקרובליידינג</button><button data-s="5">פיגמנט</button><button data-s="6">התוצאה</button>
+          <button data-s="0" class="on">לפני</button><button data-s="1">מיפוי</button><button data-s="2">שרטוט</button><button data-s="3">ניקוי</button><button data-s="4">מיקרובליידינג</button><button data-s="5">מילוי</button><button data-s="6">התוצאה</button>
         </div>
         <h3 class="sim-title" id="simTitle">לפני</h3>
         <p class="sim-text" id="simText">גבה טבעית, עם חורים ושערות שבורחות לכל הכיוונים.</p>
@@ -560,6 +560,48 @@
           </div>
         </div>
         <div class="cap"><div class="num">צביעת גבות</div><h3>בחרי <b>גוון</b></h3><p class="tint-name" id="tintName">חום בהיר</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tryon" id="tryon">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="kicker rv">הדמיה על הפנים שלך</p>
+      <h2 class="h2 split"><span class="ln"><span>איך מיקרובליידינג</span></span><span class="ln"><span><b>ייראה עלייך?</b></span></span></h2>
+      <p class="lead rv">מצלמות סלפי, וההדמיה מציירת על הגבות שלך שערות דקות, אחת אחת.</p>
+    </div>
+    <div class="to-card rv">
+      <div class="to-stage" id="toStage" style="--pos:50%">
+        <canvas class="to-cv" id="toBefore" aria-hidden="true"></canvas>
+        <canvas class="to-cv to-after" id="toAfter" role="img" aria-label="הדמיה של מיקרובליידינג על הגבות"></canvas>
+        <span class="to-line" aria-hidden="true"><i><svg class="icon"><use href="#i-arrows"/></svg></i></span>
+        <span class="to-lb to-lb-b" aria-hidden="true">לפני</span><span class="to-lb to-lb-a" aria-hidden="true">אחרי</span>
+        <span class="to-tag" id="toTag">דוגמה</span>
+        <button type="button" class="to-view" id="toView">כל הפנים</button>
+        <span class="to-scan" aria-hidden="true"></span>
+        <div class="to-busy" id="toBusy" hidden><span class="to-spin" aria-hidden="true"></span><p id="toBusyT">טוענת את ההדמיה</p></div>
+        <input type="range" class="to-range" id="toRange" min="0" max="100" value="50" aria-label="לגרור כדי להשוות לפני ואחרי">
+      </div>
+      <div class="to-ui">
+        <div class="to-shades" id="toShades" role="group" aria-label="גוון">
+          <button type="button" data-shade="auto" class="on"><i style="--c:linear-gradient(135deg,#8a6248,#5e4232)"></i>לפי השיער</button>
+          <button type="button" data-shade="light"><i style="--c:#84624a"></i>בהיר</button>
+          <button type="button" data-shade="mid"><i style="--c:#684834"></i>חום</button>
+          <button type="button" data-shade="dark"><i style="--c:#4a362a"></i>כהה</button>
+        </div>
+        <div class="to-actions">
+          <label class="btn btn-primary to-btn"><input class="vh" type="file" accept="image/*" capture="user" id="toCam"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>צלמי סלפי</label>
+          <label class="btn btn-outline to-btn"><input class="vh" type="file" accept="image/*" id="toPick">בחירת תמונה</label>
+        </div>
+        <p class="to-msg" id="toMsg" aria-live="polite">פנים ישרות, אור טוב, והגבות גלויות.</p>
+        <div class="to-after-act" id="toAfterAct" hidden>
+          <button type="button" class="btn btn-primary" id="toBook">לקביעת תור למיקרובליידינג</button>
+          <button type="button" class="btn btn-outline" id="toSave">שמירת ההדמיה</button>
+        </div>
+        <p class="to-privacy"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>התמונה נשארת בטלפון שלך ולא עולה לשום מקום.</p>
+        <p class="to-note">זו הדמיה בלבד. הצורה והגוון נקבעים אצל אביגיל, במיפוי ובהתאמה אישית.</p>
       </div>
     </div>
   </div>
@@ -1004,7 +1046,7 @@
       <details class="qa rv" style="--i:3"><summary>אפשר להתחיל לעבוד מיד אחרי הקורס?<span class="pm"></span></summary><div class="ans">כן. כבר למחרת אפשר לקבוע לקוחות. יוצאות עם הידע, עם הערכה, וגם עם הכלים לשווק את עצמך באינסטגרם.</div></details>
       <details class="qa rv" style="--i:4"><summary>מה קורה אחרי שהקורס נגמר?<span class="pm"></span></summary><div class="ans">אני כאן. ליווי 24/7, קבוצת וואטסאפ עם כל הבנות, שיחות ייעוץ, טיפים ותשובות לכל שאלה שתהיה לך.</div></details>
       <details class="qa rv" style="--i:5"><summary>כמה בנות יש בקבוצה?<span class="pm"></span></summary><div class="ans">בקורסי הגבות והריסים עד 5 בנות. קורס המיקרובליידינג הוא פרטני, אחת על אחת. אפשר גם קורס פרטני בשאר הקורסים.</div></details>
-      <details class="qa rv" style="--i:6"><summary>את מקבלת גם לטיפולים?<span class="pm"></span></summary><div class="ans">בטח. אני מקבלת לטיפולים בקליניקה ברמת גן: עיצוב גבות, מיקרובליידינג והרמת ריסים. <a class="inline-wa" href="#treat"><svg class="icon"><use href="#i-cal"/></svg>לקביעת תור באתר</a></div></details>
+      <details class="qa rv" style="--i:6"><summary>את מקבלת גם לטיפולים?<span class="pm"></span></summary><div class="ans">בטח. אני מקבלת לטיפולים בקליניקה ברמת גן: עיצוב גבות, מיקרובליידינג, הרמת ריסים והסרת קעקועים. <a class="inline-wa" href="#treat"><svg class="icon"><use href="#i-cal"/></svg>לקביעת תור באתר</a></div></details>
       <details class="qa rv" style="--i:7"><summary>איך נרשמים?<span class="pm"></span></summary><div class="ans">שולחות לי הודעה בוואטסאפ או משאירות פרטים כאן למטה. קובעות שיחת ייעוץ קצרה, בוחרות קורס ומועד, ושומרות מקום.</div></details>
     </div>
   </div>
@@ -1174,7 +1216,9 @@
   <div class="lb-foot" id="lbFoot"></div>
 </div>
 
-<script src="app.js?v=11031300" defer></script>
+<script src="hairs.js?v=11031400" defer></script>
+<script src="app.js?v=11031400" defer></script>
+<script src="tryon.js?v=11031400" defer></script>
 <script src="booking.js?v=11031200" defer></script>
 <script src="cert.js?v=11021500" defer></script>
 <script src="tattoo.js?v=11031200" defer></script>

@@ -319,108 +319,58 @@
       ['שרטוט', 'משרטטות את הצורה שמתאימה לפנים שלה.'],
       ['ניקוי', 'מורידות את כל מה שמחוץ לקו, בחוט, בשעווה ובפינצטה.'],
       ['מיקרובליידינג', 'עט עם להב דק מצייר קווים דקים כמו שערות, אחד אחד, בכיוון שבו השיער גדל.'],
-      ['פיגמנט', 'מורחות פיגמנט על הגבה. הוא נכנס לקווים, ואחרי הניקוי נשארות שערות דקות וחדות.'],
+      ['מילוי', 'עוד שערות דקות ובהירות יותר בין הקווים, כדי שהגבה תיראה מלאה וטבעית.'],
       ['התוצאה', 'לפני ואחרי, באותה גבה.'],
     ];
-    const sp1 = $('.sp1', stage), sp3 = $('.sp3', stage), brush = $('#simBrush');
+    const sp1 = $('.sp1', stage), brush = $('#simBrush');
 
-    /* microblading: fine hair strokes, one by one, in the direction the hair grows
-       (front hairs stand up, the lower row rises toward the tail, the upper row lies
-       down onto it, the tail runs flat), drawn by a blade pen */
-    const hairG = $('#simHairG'), pen = $('#simPen');
-    const strokes = [];
-    if (hairG) {
+    /* microblading: fine hair strokes drawn one by one by a blade pen (shapes in hairs.js) */
+    const pen = $('#simPen'), hc = $('#simHc'), hctx = hc && hc.getContext('2d');
+    let hairs = [], nMain = 0;
+    if (hctx && window.AKHairs) {
       const cub = (a, b, c, d, t) => { const m = 1 - t; return [0, 1].map((k) => m * m * m * a[k] + 3 * m * m * t * b[k] + 3 * m * t * t * c[k] + t * t * t * d[k]); };
       const curve = (segs) => { const pts = []; segs.forEach((g) => { for (let i = 0; i <= 50; i++) pts.push(cub(...g, i / 50)); }); return pts.sort((a, b) => a[0] - b[0]); };
       const yAt = (pts, x) => { for (let i = 1; i < pts.length; i++) if (pts[i][0] >= x) { const a = pts[i - 1], b = pts[i]; return a[1] + (b[1] - a[1]) * ((x - a[0]) / ((b[0] - a[0]) || 1)); } return pts[pts.length - 1][1]; };
+      // the brow edges in the photo (1536 x 1024 space), the same shape as the dashed outline
       const LO = curve([[[216, 424], [380, 345], [640, 262], [846, 258]], [[846, 258], [1050, 258], [1235, 330], [1372, 408]]]);
       const UP = curve([[[1372, 408], [1300, 320], [1130, 160], [868, 124]], [[868, 124], [610, 104], [345, 205], [220, 300]]]);
-      const lo = (x) => yAt(LO, x), up = (x) => yAt(UP, x), th = (x) => lo(x) - up(x), mid = (x) => (lo(x) + up(x)) / 2;
-      const tan = (x) => Math.atan2(mid(x + 10) - mid(x - 10), 20);
-      let seed = 9; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      const R = Math.PI / 180, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-      const raw = [];
-      const add = (x, y, ang, L, bend) => {
-        const dx = Math.cos(ang), dy = Math.sin(ang), ex = x + dx * L, ey = y + dy * L;
-        const cx = (x + ex) / 2 - dy * L * bend, cy = (y + ey) / 2 + dx * L * bend;
-        raw.push({ x, d: `M${x.toFixed(1)} ${y.toFixed(1)}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`, w: 3.6 + rnd() * 1.4, o: 0.72 + rnd() * 0.24 });
-      };
-      for (let x = 232; x <= 330; x += 11 + rnd() * 4) { // front: standing up, leaning to the tail
-        const t = th(x), lean = (10 + (x - 232) * 0.2 + rnd() * 6) * R;
-        add(x, lo(x) - t * (0.04 + rnd() * 0.08), -Math.PI / 2 + lean, t * (0.7 + rnd() * 0.22), 0.07);
-      }
-      for (let x = 318; x <= 1170; x += 21 + rnd() * 7) { // lower row: rising toward the tail
-        const t = th(x), rot = (30 - (x - 318) / 852 * 14) * R;
-        add(x, lo(x) - t * (0.06 + rnd() * 0.1), tan(x) - rot, clamp(t * 0.56 / Math.sin(rot), 50, 175) * (0.85 + rnd() * 0.22), 0.06);
-      }
-      for (let x = 360; x <= 1210; x += 24 + rnd() * 7) { // upper row: lying down onto the lower row
-        const t = th(x), rot = (24 - (x - 360) / 850 * 10) * R;
-        add(x, up(x) + t * (0.05 + rnd() * 0.08), tan(x) + rot, clamp(t * 0.5 / Math.sin(rot), 46, 165) * (0.85 + rnd() * 0.22), 0.05);
-      }
-      for (let x = 1160; x <= 1338; x += 15 + rnd() * 5) { // tail: almost flat
-        const t = th(x);
-        add(x, mid(x) + (rnd() - 0.5) * t * 0.45, tan(x) + 4 * R, clamp((1372 - x) * 0.85, 26, 88), 0.04);
-      }
-      raw.sort((a, b) => a.x - b.x);
-      const NS = 'http://www.w3.org/2000/svg';
-      raw.forEach((h) => {
-        const el = document.createElementNS(NS, 'path');
-        el.setAttribute('d', h.d); el.setAttribute('pathLength', '1'); el.setAttribute('class', 'hr');
-        el.style.strokeWidth = h.w.toFixed(2); el.style.strokeOpacity = h.o.toFixed(2);
-        hairG.appendChild(el); strokes.push({ el, len: 0, p: 0 });
-      });
+      const edge = (u) => { const x = 224 + 1142 * u; return { lo: [x, yAt(LO, x) - 6], up: [x, yAt(UP, x) + 4] }; };
+      hairs = AKHairs.plan(edge, { width: 3.9, seed: 11 });
+      nMain = hairs.filter((h) => !h.tone).length;
     }
-    let hraf = 0, inkT = 0;
+    let hraf = 0, shown = 0, fitted = false; // shown: how many hairs are fully drawn
     const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
-    const maskRect = $('#simMaskRect');
-    const resetHairs = () => {
-      cancelAnimationFrame(hraf); clearTimeout(inkT);
-      stage.classList.remove('drawing', 'inked', 'pig');
-      strokes.forEach((s) => { s.p = 0; s.el.style.strokeDashoffset = 1; });
-      if (maskRect) maskRect.setAttribute('x', '-40');
+    const fit = () => { const r = stage.getBoundingClientRect(), k = Math.min(3, (devicePixelRatio || 1) * 1.3); if (!r.width) return; hc.width = Math.round(r.width * k); hc.height = Math.round(r.width / 1.5 * k); fitted = true; };
+    const paint = (prog) => {
+      if (!hctx) return;
+      if (!fitted) fit();
+      const k = hc.width / 1536;
+      hctx.clearRect(0, 0, hc.width, hc.height);
+      AKHairs.draw(hctx, hairs, prog, { xf: (p) => [p[0] * k, p[1] * k], color: [104, 72, 52], color2: [152, 116, 92], alpha: 0.82 });
     };
-    // step 4: the blade pen draws the hair strokes one by one
-    const runHairs = () => {
-      resetHairs();
-      if (!strokes.length) return;
-      const N = strokes.length, T0 = 280, SPAN = 2050, D = 170, gap = SPAN / N;
+    const stopHairs = () => { cancelAnimationFrame(hraf); stage.classList.remove('drawing'); };
+    const setHairs = (n) => { stopHairs(); shown = n; paint((i) => (i < n ? 1 : 0)); };
+    // draw hairs a..b one after the other over `span` ms, the pen riding on the newest one
+    const drawRange = (a, b, span) => {
+      setHairs(a);
+      if (b <= a) return;
+      const D = 150, T0 = 260, gap = span / (b - a);
       let px = null, py = null, t0 = 0;
       stage.classList.add('drawing');
       const f = (now) => {
         if (!t0) t0 = now;
         const t = now - t0 - T0;
-        for (let i = 0; i < N; i++) {
-          const s = strokes[i], p = clamp01((t - i * gap) / D);
-          if (p !== s.p) { s.p = p; s.el.style.strokeDashoffset = 1 - p; }
-        }
-        // the pen follows the newest stroke, smoothed so it glides instead of jumping
-        const k = Math.max(0, Math.min(N - 1, Math.floor(t / gap))), s = strokes[k];
-        if (!s.len) s.len = s.el.getTotalLength();
-        const pt = s.el.getPointAtLength(s.len * clamp01((t - k * gap) / D));
-        px = px === null ? pt.x : px + (pt.x - px) * 0.32; py = py === null ? pt.y : py + (pt.y - py) * 0.32;
+        paint((i) => (i < a ? 1 : i >= b ? 0 : clamp01((t - (i - a) * gap) / D)));
+        const k = Math.max(a, Math.min(b - 1, a + Math.floor(t / gap))), pt = AKHairs.point(hairs[k], clamp01((t - (k - a) * gap) / D));
+        px = px === null ? pt[0] : px + (pt[0] - px) * 0.3; py = py === null ? pt[1] : py + (pt[1] - py) * 0.3;
         pen.setAttribute('transform', `translate(${px.toFixed(1)} ${py.toFixed(1)})`);
-        if (t < SPAN + D) hraf = requestAnimationFrame(f); else stage.classList.remove('drawing');
+        if (t < span + D) { hraf = requestAnimationFrame(f); return; }
+        stage.classList.remove('drawing'); shown = b; paint((i) => (i < b ? 1 : 0));
       };
       hraf = requestAnimationFrame(f);
     };
-    // step 5: pigment is spread over the strokes, then wiped off from the front to the tail
-    const runPigment = () => {
-      resetHairs();
-      strokes.forEach((s) => { s.p = 1; s.el.style.strokeDashoffset = 0; });
-      stage.classList.add('pig');
-      inkT = setTimeout(() => {
-        if (cur !== 5) return;
-        sp3.classList.add('on'); stage.classList.add('inked');
-        sweep(false);
-        const t0 = performance.now(), D = 1500;
-        const f = (now) => {
-          const k = clamp01((now - t0) / D), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-          if (maskRect) maskRect.setAttribute('x', (e * 1620 - 40).toFixed(0));
-          if (k < 1 && cur === 5) hraf = requestAnimationFrame(f);
-        };
-        hraf = requestAnimationFrame(f);
-      }, 650);
-    };
+    let rzT = 0;
+    addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(() => { if (hctx) { fit(); if (shown) paint((i) => (i < shown ? 1 : 0)); } }, 200); });
     const chips = $$('#simChips button'), title = $('#simTitle'), text = $('#simText'), bar = $('#simBar'), num = $('#simNum');
     let cur = -1, timer = null, visible = false, manual = false;
     const sweep = (slow) => { brush.classList.remove('go', 'slow'); void brush.offsetWidth; brush.classList.add('go'); if (slow) brush.classList.add('slow'); };
@@ -428,9 +378,10 @@
       const prev = cur; cur = n;
       if (n < prev) { stage.classList.add('reset'); void stage.offsetWidth; }
       for (let k = 1; k <= 6; k++) stage.classList.toggle('s' + k, k <= n);
-      sp1.classList.toggle('on', n >= 3 && n <= 5);
-      sp3.classList.toggle('on', n === 6);
-      if (n === 4) { if (prev !== 4) runHairs(); } else if (n === 5) { if (prev !== 5) runPigment(); } else resetHairs();
+      sp1.classList.toggle('on', n >= 3);
+      if (n === 4) { if (prev !== 4) drawRange(0, nMain, 2300); }
+      else if (n === 5) { if (prev !== 5) drawRange(nMain, hairs.length, 1350); }
+      else setHairs(n === 6 ? hairs.length : 0);
       if (n < prev) requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.remove('reset')));
       if (n === 3 && n > prev) sweep(false);
       chips.forEach((c, i) => c.classList.toggle('on', i === n));
@@ -441,7 +392,7 @@
       const chip = chips[n]; const row = chip.parentElement;
       row.scrollTo({ left: chip.offsetLeft - row.clientWidth / 2 + chip.offsetWidth / 2, behavior: 'smooth' });
     };
-    const DUR = [1050, 1500, 1300, 1350, 3100, 2500, 2600];
+    const DUR = [1050, 1500, 1300, 1350, 2950, 1950, 3000];
     const tick = () => {
       clearTimeout(timer);
       if (!visible || manual) return;
