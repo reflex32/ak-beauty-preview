@@ -2375,3 +2375,6 @@ html.a11y-still *, html.a11y-still *::before, html.a11y-still *::after { animati
 .bk-agree:has(input:checked) { border-color: var(--brown); }
 .bk-agree.nudge { border-color: #b0473a; box-shadow: 0 0 0 4px rgba(176, 71, 58, .14); animation: bk-nudge .4s ease; }
 @keyframes bk-nudge { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+
+/* booking done: her personal link to move or cancel */
+.bk-manage { display: inline-block; margin-top: 8px; color: var(--brown); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }

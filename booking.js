@@ -1,17 +1,25 @@
 /* ==========================================================================
    Booking — Avigail's own booking system.
-   Front: this file. Back: the Google Apps Script web app in backend/Code.gs
-   (free times from her hours + calendar, saves the booking, puts it in her
-   calendar and sends her a WhatsApp message).
-   Until API_URL is set, the flow still works: free times come from the opening
-   hours below and the booking is sent to Avigail as a ready WhatsApp message.
+   Front: this file. Back: her system on Supabase (window.AK_SB in config.js):
+   treatments and hours (site_config), free times (site_week) and the booking
+   itself (site_book), which lands in her dashboard, takes the deposit and sends
+   the WhatsApp confirmation.
+   Without it, the flow still works: free times come from the opening hours
+   below and the booking is sent to Avigail as a ready WhatsApp message.
    ========================================================================== */
 (() => {
   'use strict';
   const root = document.getElementById('bk');
   if (!root) return;
 
-  const API_URL = window.AK_API || ''; // set once in config.js after deploying backend/Code.gs
+  const API_URL = window.AK_API || ''; // the old Apps Script backend (backend/Code.gs), only if AK_SB is not set
+  const SB = window.AK_SB && window.AK_SB.url ? window.AK_SB : null;
+  const sbRpc = async (fn, args) => {
+    const r = await fetch(`${SB.url}/rest/v1/rpc/${fn}`, { method: 'POST', headers: { apikey: SB.key, 'Content-Type': 'application/json' }, body: JSON.stringify(args) });
+    const d = await r.json().catch(() => null);
+    if (!r.ok) throw new Error((d && d.message) || String(r.status));
+    return d;
+  };
   const AVIGAIL_WA = '972502774797';
   const PLACE = { ll: '32.0526698,34.8488945', label: 'AK Beauty Academy, בית הרופאים, גילדסגיים 4, רמת גן' };
   const DEMO = /[?&]bkdemo\b/.test(location.search); // preview only: fake busy slots, no messages
@@ -63,11 +71,13 @@
   /* ---------------- API ---------------- */
   const api = {
     async config() {
+      if (SB && !DEMO) { const d = await sbRpc('site_config', {}); return d && d.ok ? d : null; }
       if (!API_URL) return null;
       const r = await fetch(`${API_URL}?action=config`); const d = await r.json();
       return d && d.ok ? d : null;
     },
     async week(from, minutes) {
+      if (SB && !DEMO) { const d = await sbRpc('site_week', { p_from: from, p_minutes: minutes }); if (!d || !d.ok) throw new Error('slots'); return d.days; }
       if (API_URL && !DEMO) {
         const r = await fetch(`${API_URL}?action=slots&from=${from}&minutes=${minutes}`); const d = await r.json();
         if (!d.ok) throw new Error(d.error || 'slots');
@@ -77,6 +87,7 @@
     },
     async book(b) {
       if (DEMO) { await new Promise((r) => setTimeout(r, 900)); return { ok: true, returning: !!recall(), name: b.name.split(' ')[0] }; }
+      if (SB) return sbRpc('site_book', { p: b });
       // text/plain keeps it a simple request (no CORS preflight) for Apps Script
       const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'book', ...b }) });
       return r.json();
@@ -295,7 +306,7 @@
         <div><small>סה״כ</small><b>${sum('price') ? ils(sum('price')) : '—'}</b></div>
       </div>
       ${stamp ? `<div class="iv-actions"><a class="iv-btn" href="${opts.ics || '#'}" download="AK-Beauty.ics"><svg class="icon"><use href="#i-cal"/></svg>הוספה ליומן</a><a class="iv-btn ghost" href="https://waze.com/ul?ll=${PLACE.ll}&navigate=yes" target="_blank" rel="noopener"><svg class="icon"><use href="#i-waze"/></svg>ניווט</a></div>` : ''}
-      <p class="iv-note">${API_URL ? 'ביטול דרך הקישור בוואטסאפ, עד 19:00 בערב שלפני' : 'שינוי או ביטול בוואטסאפ, עד 19:00 בערב שלפני'}</p>`;
+      <p class="iv-note">${SB || API_URL ? 'הזזה או ביטול דרך הקישור האישי, עד 19:00 בערב שלפני' : 'שינוי או ביטול בוואטסאפ, עד 19:00 בערב שלפני'}</p>`;
     el.classList.toggle('stamped', !!stamp);
   };
   let lastDone = null;
@@ -330,7 +341,7 @@
     const body = { name, phone, services: [...S.sel], date: S.days[S.day].date, time: S.time, note: form.note.value.trim(), company: form.company.value, terms: new Date().toISOString() };
 
     // without the API: open WhatsApp now (synchronously, so phones don't block it)
-    if (!API_URL && !DEMO) {
+    if (!API_URL && !SB && !DEMO) {
       window.open(`https://wa.me/${AVIGAIL_WA}?text=${encodeURIComponent(waText(body))}`, '_blank', 'noopener');
       remember({ name, phone }); done({ viaWhatsApp: true, name: name.split(' ')[0] }); return;
     }
@@ -339,6 +350,9 @@
       const r = await api.book(body);
       if (!r || !r.ok) {
         if (r && r.error === 'taken') { msg3.textContent = 'השעה הזאת נתפסה הרגע. בחרי שעה אחרת.'; S.days = []; setTimeout(() => { go(2); loadDates(); }, 1200); return; }
+        const ask = (t) => { msg3.innerHTML = `${t} <a href="https://wa.me/${AVIGAIL_WA}?text=${encodeURIComponent(waText(body))}" target="_blank" rel="noopener">כתבי לאביגיל בוואטסאפ</a>`; };
+        if (r && r.error === 'too_many') { ask('יש לך כבר כמה תורים קבועים. לתור נוסף'); return; }
+        if (r && r.error === 'blocked') { ask('את התור הזה קובעים ישירות מול אביגיל:'); return; }
         throw new Error(r && r.error);
       }
       remember({ name, phone });
@@ -368,9 +382,15 @@
     const pay = $('#bkPay');
     pay.hidden = !(r.payUrl && deposit());
     if (!pay.hidden) { pay.href = r.payUrl; $('span', pay).textContent = `לתשלום המקדמה, ${ils(deposit())}`; }
-    $('#bkDoneTxt').textContent = r.viaWhatsApp
+    const doneTxt = $('#bkDoneTxt');
+    doneTxt.textContent = r.viaWhatsApp
       ? 'נפתחה לך הודעה מוכנה לאביגיל בוואטסאפ. שולחות, והיא מאשרת את התור.'
       : (r.clientNotified ? 'שלחתי לך אישור בוואטסאפ, ותזכורת תגיע יום לפני.' : 'כדאי לשמור את התור ביומן או לצלם את הכרטיס.');
+    if (r.manage && !r.viaWhatsApp) { // her personal link: see, move or cancel the appointment
+      const a = document.createElement('a'); a.href = r.manage; a.textContent = 'להזזה או ביטול של התור'; a.className = 'bk-manage';
+      doneTxt.append(document.createElement('br'), a);
+    }
+    if (!r.viaWhatsApp && deposit() && !r.payUrl) doneTxt.append(document.createElement('br'), `על המקדמה (${ils(deposit())}) אביגיל תשלח לך פרטים לתשלום.`);
     go(4);
     burst();
     try { window.akTrack && window.akTrack('book', { value: sum('price') || 0, via: r.viaWhatsApp ? 'whatsapp' : 'site' }); } catch (e) {}
