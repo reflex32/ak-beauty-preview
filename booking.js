@@ -322,8 +322,12 @@
     const name = form.name.value.trim(), phone = localPhone(form.phone.value);
     if (name.length < 2) { msg3.textContent = 'מה השם המלא שלך?'; form.name.focus(); return; }
     if (!/^05\d{8}$/.test(phone)) { msg3.textContent = 'מספר הטלפון לא נראה תקין.'; form.phone.focus(); return; }
+    if (!form.agree.checked) {
+      msg3.textContent = 'כדי לקבוע תור צריך לסמן שקראת ואישרת את התקנון.';
+      const ag = $('#bkAgree'); ag.classList.remove('nudge'); void ag.offsetWidth; ag.classList.add('nudge'); form.agree.focus(); return;
+    }
     const btn = $('.bk-cta', form);
-    const body = { name, phone, services: [...S.sel], date: S.days[S.day].date, time: S.time, note: form.note.value.trim(), company: form.company.value };
+    const body = { name, phone, services: [...S.sel], date: S.days[S.day].date, time: S.time, note: form.note.value.trim(), company: form.company.value, terms: new Date().toISOString() };
 
     // without the API: open WhatsApp now (synchronously, so phones don't block it)
     if (!API_URL && !DEMO) {
@@ -345,7 +349,7 @@
   });
   const waText = (b) => {
     const d = fromYmd(b.date);
-    return ['היי אביגיל, אני רוצה לקבוע תור דרך האתר', picked().map((s) => s.name).join(' + '), `יום ${DAY[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1} בשעה ${b.time}`, `שם: ${b.name}`, `טלפון: ${b.phone}`, b.note ? `הערה: ${b.note}` : ''].filter(Boolean).join('\n');
+    return ['היי אביגיל, אני רוצה לקבוע תור דרך האתר', picked().map((s) => s.name).join(' + '), `יום ${DAY[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1} בשעה ${b.time}`, `שם: ${b.name}`, `טלפון: ${b.phone}`, b.note ? `הערה: ${b.note}` : '', b.terms ? 'קראתי ואישרתי את תקנון התורים' : ''].filter(Boolean).join('\n');
   };
 
   /* ---------------- done ---------------- */

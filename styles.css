@@ -2368,3 +2368,10 @@ html.a11y-still *, html.a11y-still *::before, html.a11y-still *::after { animati
   .to-stage.face { aspect-ratio: 4 / 3; }
   .to-ui { padding: 28px; }
 }
+
+/* booking: the terms must be ticked before booking */
+.bk-agree { display: flex; align-items: flex-start; gap: 10px; margin: 6px 2px 12px; padding: 12px 14px; border-radius: 16px; background: rgba(255, 255, 255, .7); border: 1px solid rgba(92, 52, 34, .14); font-size: 14.5px; line-height: 1.5; color: var(--ink); cursor: pointer; transition: border-color .25s, box-shadow .25s; }
+.bk-agree input { flex: none; width: 21px; height: 21px; margin: 1px 0 0; accent-color: var(--brown); cursor: pointer; }
+.bk-agree:has(input:checked) { border-color: var(--brown); }
+.bk-agree.nudge { border-color: #b0473a; box-shadow: 0 0 0 4px rgba(176, 71, 58, .14); animation: bk-nudge .4s ease; }
+@keyframes bk-nudge { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
