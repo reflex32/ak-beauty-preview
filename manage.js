@@ -83,7 +83,7 @@
         : info.status === 'booked' ? `<div class="stack" style="margin-bottom:10px"><button class="btn ok" id="goConfirm"><svg class="ic"><use href="#i-check"/></svg>אני מגיעה, מאשרת</button></div>` : ''}
       ${info.can_change ? `
         <div class="stack">
-          <button class="btn ${info.status === 'booked' ? 'ghost' : 'primary'}" id="goMove"><svg class="ic"><use href="#i-move"/></svg>להזיז את התור</button>
+          <button class="btn ${['booked', 'confirmed'].includes(info.status) ? 'ghost' : 'primary'}" id="goMove"><svg class="ic"><use href="#i-move"/></svg>להזיז את התור</button>
           <button class="btn ghost" id="goCancel">לבטל את התור</button>
         </div>
         <p class="rule">אפשר להזיז או לבטל כאן עד ${dayLong(dl)} בשעה ${hm(dl)}.</p>` : `
