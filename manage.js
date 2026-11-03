@@ -79,15 +79,22 @@
         <a class="chip" href="https://waze.com/ul?q=${encodeURIComponent(biz().address || 'גילדסגיים 4 רמת גן')}&navigate=yes" target="_blank" rel="noopener"><svg class="ic"><use href="#i-pin"/></svg>ניווט</a>
         <a class="chip" href="${icsHref()}" download="appointment.ics"><svg class="ic"><use href="#i-cal"/></svg>הוספה ליומן</a>
       </div>
+      ${info.status === 'confirmed' ? '<p class="confirmed"><svg class="ic"><use href="#i-check"/></svg>אישרת הגעה. תודה, מחכה לך!</p>'
+        : info.status === 'booked' ? `<div class="stack" style="margin-bottom:10px"><button class="btn ok" id="goConfirm"><svg class="ic"><use href="#i-check"/></svg>אני מגיעה, מאשרת</button></div>` : ''}
       ${info.can_change ? `
         <div class="stack">
-          <button class="btn primary" id="goMove"><svg class="ic"><use href="#i-move"/></svg>להזיז את התור</button>
+          <button class="btn ${info.status === 'booked' ? 'ghost' : 'primary'}" id="goMove"><svg class="ic"><use href="#i-move"/></svg>להזיז את התור</button>
           <button class="btn ghost" id="goCancel">לבטל את התור</button>
         </div>
         <p class="rule">אפשר להזיז או לבטל כאן עד ${dayLong(dl)} בשעה ${hm(dl)}.</p>` : `
         <p class="rule">לפי תקנון התורים, אפשר לשנות דרך האתר עד 19:00 בערב שלפני התור. כדי לשנות עכשיו, כתבי לאביגיל.</p>
         <div class="stack" style="margin-top:12px"><a class="btn wa" href="${waLink(`היי אביגיל, לגבי התור שלי ${dayLong(s)} בשעה ${hm(s)}`)}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>לכתוב לאביגיל בוואטסאפ</a></div>`}`;
-    const gm = $('#goMove'), gc = $('#goCancel');
+    const gm = $('#goMove'), gc = $('#goCancel'), gf = $('#goConfirm');
+    if (gf) gf.addEventListener('click', async () => {
+      gf.disabled = true;
+      try { const r = await rpc('booking_confirm', { p_token: token }); if (r && r.ok) { info = r; main(); } else throw new Error(); }
+      catch (e) { gf.disabled = false; gf.textContent = 'משהו לא עבד. נסי שוב'; }
+    });
     if (gm) gm.addEventListener('click', move);
     if (gc) gc.addEventListener('click', cancel);
   };

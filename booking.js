@@ -435,6 +435,21 @@
     const body = { name, phone, services: [...S.sel], date: chipVal('date') || 'any', part: chipVal('part') || 'לא משנה', company: wForm.company.value };
     const label = wForm.querySelector('#bkWaitDays .on'), when = label ? label.textContent : 'כל יום שמתפנה';
     const finish = (txt) => { remember({ name, phone }); wForm.hidden = true; wDone.hidden = false; document.getElementById('bkWaitDoneTxt').textContent = txt; };
+    // Avigail's booking system: straight into her waiting list in the dashboard
+    if (window.AK_SB && window.AK_SB.url && !DEMO) {
+      const btn0 = wForm.querySelector('.bk-cta'); btn0.disabled = true; btn0.classList.add('busy');
+      const PART = { 'בוקר': 'morning', 'צהריים': 'noon', 'אחר הצהריים': 'noon', 'ערב': 'evening' };
+      try {
+        const r = await (await fetch(`${window.AK_SB.url}/rest/v1/rpc/join_waitlist`, { method: 'POST', headers: { apikey: window.AK_SB.key, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p: { name, phone, services: body.services, day: /^\d{4}-\d{2}-\d{2}$/.test(body.date) ? body.date : '', part: PART[body.part] || 'any', company: body.company } }) })).json();
+        if (!r || !r.ok) throw new Error(r && r.error);
+        finish('נרשמת לרשימת ההמתנה. כשמתפנה תור שמתאים לך, אביגיל תשלח לך הודעה בוואטסאפ עם קישור לקביעה.');
+        try { window.akTrack && window.akTrack('waitlist'); } catch (x) {}
+      } catch (err) {
+        wMsg.innerHTML = `משהו לא עבד. <a href="https://wa.me/${AVIGAIL_WA}" target="_blank" rel="noopener">כתבי לאביגיל בוואטסאפ</a>`;
+      } finally { btn0.disabled = false; btn0.classList.remove('busy'); }
+      return;
+    }
     if (!API_URL && !DEMO) { // without the server: a ready message to Avigail
       const text = ['היי אביגיל, לא מצאתי שעה באתר ואשמח להיכנס לרשימת ההמתנה', picked().map((s) => s.name).join(' + '), `${when} · ${body.part}`, `שם: ${name}`, `טלפון: ${phone}`].join('\n');
       window.open(`https://wa.me/${AVIGAIL_WA}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
